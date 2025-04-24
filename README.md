@@ -165,4 +165,9 @@ ecommerce-api/
 Installation des packages necessaires :
 npm i express dotenv bcryptjs cors cookie-parser express-validator jsonwebtoken pg pg-hstore sequelize nodemon sequelize-cli
 
+modelisation et migration
+npx sequelize-cli init
+npx sequelize-cli model:generate --name User --attributes firstName:string,lastName:string,email:string
+npx sequelize-cli db:migrate
+
 https://roadmap.sh/projects/ecommerce-api
