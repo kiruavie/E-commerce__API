@@ -2,7 +2,8 @@ const express = require("express");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const { Sequelize } = require("sequelize");
-const router = require("./routes/auth.routes.js");
+const AuthRouter = require("./routes/auth.routes");
+const ProductRouter = require("./routes/product.routes");
 const app = express();
 
 // middlewares pour analyser les requêtes HTTP
@@ -13,7 +14,9 @@ app.use(express.urlencoded({ extended: true }));
 
 // middlewares pour les routes
 // auth routes
-app.use("api/v1/auth", router);
+app.use("/api/v1/auth", AuthRouter);
+
+app.use("/api/v1/products", ProductRouter);
 
 // connexion à la base de donnée
 const sequelize = new Sequelize(process.env.DB_URL, {

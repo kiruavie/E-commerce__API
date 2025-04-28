@@ -5,14 +5,19 @@ exports.authMiddleware = async (req, res, next) => {
 
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
     return res.status(401).json({
-      mesage:
+      message:
         "Token manquant ou format invalide. Utilisez le format 'Bearer Token'",
     });
   }
 
   const token = authHeader.split(" ")[1];
+
+  if (!token) {
+    return res.status(401).json({ message: "Token manquant après Bearer" });
+  }
+
   try {
-    // Decoder le token et l'envoyer aux requêtes pour y acceder dans les autres routes
+    // Décoder le token
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     req.user = decoded;
     next();

@@ -4,15 +4,23 @@ const {
   loginController,
 } = require("../controllers/auth.controller.js");
 const { refreshToken } = require("../controllers/refresh.controller.js");
+const { validateRequest } = require("../middlewares/validationRequest.js");
+const {
+  validationRegister,
+  validationLogin,
+} = require("../middlewares/validation.middleware.js");
 
-const router = express.Router();
+const AuthRouter = express.Router();
 
-// inscription
-router.post("/register", registrerController);
+AuthRouter.post(
+  "/register",
+  validationRegister,
+  validateRequest,
+  registrerController
+);
 
-// connexion
-router.post("/login", loginController);
+AuthRouter.post("/login", validationLogin, validateRequest, loginController);
 
-router.get("/refresh", refreshToken);
+AuthRouter.get("/refresh", refreshToken);
 
-module.exports = router;
+module.exports = AuthRouter;

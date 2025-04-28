@@ -8,13 +8,34 @@ const {
   updateProduct,
   deleteProduct,
 } = require("../controllers/product.controller");
+const {
+  createProductValidator,
+} = require("../middlewares/validation.middleware");
+const { validateRequest } = require("../middlewares/validationRequest");
 
-const router = express.Router();
+const ProductRouter = express.Router();
 
-router.get("/", getAllProducts);
-router.get("/:id", getProductById);
-router.post("/", authMiddleware, isAdmin, createProduct);
-router.put("/:id", authMiddleware, isAdmin, updateProduct);
-router.delete("/:id", authMiddleware, isAdmin, deleteProduct);
+ProductRouter.get("/", getAllProducts);
+ProductRouter.get("/:id", getProductById);
 
-module.exports = router;
+ProductRouter.post(
+  "/",
+  authMiddleware,
+  isAdmin,
+  createProductValidator,
+  validateRequest,
+  createProduct
+);
+
+ProductRouter.put(
+  "/:id",
+  authMiddleware,
+  isAdmin,
+  createProductValidator,
+  validateRequest,
+  updateProduct
+);
+
+ProductRouter.delete("/:id", authMiddleware, isAdmin, deleteProduct);
+
+module.exports = ProductRouter;

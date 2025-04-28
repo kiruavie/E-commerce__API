@@ -6,14 +6,14 @@ exports.createProduct = async (req, res) => {
   try {
     const { name, description, price, available, image } = req.body;
 
-    if (!name || !description || !price || !image) {
+    if (!name || !description || !price) {
       return res.status(400).json("Tous les champs sont réquis");
     }
     const newProduct = await Product.create({
       name,
       description,
       price,
-      available: true,
+      available: available ?? true,
       image,
     });
 

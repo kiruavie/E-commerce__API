@@ -21,7 +21,12 @@ exports.registrerController = async (req, res) => {
     }
 
     // créer un utilisateur
-    const create_user = await User.create({ name, email, role, password });
+    const create_user = await User.create({
+      name,
+      email,
+      role: req.body.role || "client",
+      password,
+    });
 
     // supprimer le mot de passe avant de renvoyer la réponse json
     const sanitzed_user = { ...create_user.toJSON() };
@@ -52,7 +57,10 @@ exports.loginController = async (req, res) => {
     }
 
     // Verifier si l'utilisateur existe
-    const exist_user = await User.findOne({ where: { email } });
+    const exist_user = await User.findOne({
+      where: { email },
+      attributes: ["id", "name", "email", "role", "password"],
+    });
     if (!exist_user) {
       return res.status(400).json("Email ou mot de passe incorrecte");
     }
@@ -67,13 +75,13 @@ exports.loginController = async (req, res) => {
 
     // Génerer un token JWT
     const accessToken = jwt.sign(
-      { id: exist_user.id, email: exist_user.email },
+      { id: exist_user.id, email: exist_user.email, role: exist_user.role },
       process.env.JWT_SECRET,
       { expiresIn: "1h" }
     );
 
     const refreshToken = jwt.sign(
-      { id: exist_user.id },
+      { id: exist_user.id, role: exist_user.role },
       process.env.JWT_REFRESH_SECRET,
       { expiresIn: "7d" }
     );

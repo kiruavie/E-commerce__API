@@ -29,8 +29,9 @@ module.exports = (sequelize, DataTypes) => {
       description: {
         type: DataTypes.STRING,
         validate: {
-          len: [10, 300],
-          msg: "Le nombre de caractère est compris entre 10 et 300",
+          notEmpty: {
+            msg: "La description est requise",
+          },
         },
       },
       price: {
