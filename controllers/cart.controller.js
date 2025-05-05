@@ -27,7 +27,7 @@ exports.getActiveCart = async (req, res) => {
   }
 };
 
-exports.updateCartTotal = async (res, res) => {
+exports.updateCartTotal = async (req, res) => {
   try {
     const userId = req.user.id;
     const { total_price } = req.body;
@@ -53,10 +53,10 @@ exports.updateCartTotal = async (res, res) => {
   }
 };
 
-exports.completedCart = async (req, res) => {
+exports.completeCart = async (req, res) => {
   try {
     const userId = req.user.id;
-    const cart = await Cart.fondOne({
+    const cart = await Cart.findOne({
       where: { user_id: userId, statut: "active" },
     });
 
@@ -71,12 +71,10 @@ exports.completedCart = async (req, res) => {
 
     res.status(200).json({ success: true, message: "Panier finalisé", cart });
   } catch (error) {
-    res
-      .status(500)
-      .json({
-        success: false,
-        message: "Erreur serveur",
-        error: error.message,
-      });
+    res.status(500).json({
+      success: false,
+      message: "Erreur serveur",
+      error: error.message,
+    });
   }
 };

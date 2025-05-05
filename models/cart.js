@@ -26,7 +26,7 @@ module.exports = (sequelize, DataTypes) => {
   Cart.init(
     {
       user_id: { type: DataTypes.INTEGER, allowNull: false },
-      total_price: DataTypes.FLOAT,
+      total_price: { type: DataTypes.FLOAT, allowNull: false },
       statut: {
         type: DataTypes.ENUM("active", "completed", "cancelled"),
         defaultValue: "active",
